@@ -1,0 +1,132 @@
+<script type="text/javascript">
+        //Uses an array of related words for a Hangman game and presents one randomly for the user to guess 
+       // Variables for number of correct and incorrect guesses //
+        var wins = 0;
+        var losses = 0;
+      
+
+        // Variables for HTML text to be generated during play 
+        var directionsText = document.getElementById("directions-text");
+        var placeholderText = document.getElementById("placeholder-text");
+        var userChoiceText = document.getElementById("userchoice-text");
+        var computerChoiceText = document.getElementById("computerchoice-text");
+        var winsText = document.getElementById("wins-text");
+        var lossesText = document.getElementById("losses-text");
+         
+        // Variables for list, word, user answers, and indicators
+        var hangword = "";
+        var placeholder = [];
+        var userGuess = false;
+        var winlose ="";
+        var wordlist = ["marriage",
+                    "household",
+                    "nuclear family",
+                    "kin",
+                    "house",
+                    "kinfolk",
+                    "home",
+                    "lineage",
+                    "kinship",
+                    "parent",
+                    "relative",
+                    "extended family",
+                    "clan",
+                    "cousin",
+                    "children",
+                    "child",
+                    "sister",
+                    "mother",
+                    "father",
+                    "uncle",
+                    "nephew",
+                    "brother",
+                    "grandson",
+                    "son",
+                    "grandfather",
+                    "grandmother",
+                    "kinsfolk",
+                    "ancestor",
+                    "family law",
+                    "consanguinity",
+                    "people",
+                    "tribe",
+                    "sibling",
+                    "subfamily",
+                    "foster family",
+                    "immediate family",
+                    "kindred",
+                    "stepfamily",
+                    "avuncular",
+                    "couple"];
+
+
+        // Function to generate a random word from list 
+        function randomword(){
+                hangword = wordlist[Math.floor(Math.random() * wordlist.length)];
+        
+        };
+
+        // Function to build placeholder for word along with user's guesses
+        function buildplaceholder() {
+            for (i = 0; i < hangword.length; i++) {
+                placeholder.push("_");
+              
+            }
+        }
+
+        // Function to determine if user guess is in word and compile stats avoiding the counting of duplicate letters and guesses
+        function checkforletter() {
+            var goodguess = false;
+            for (i = 0; i < hangword.length; i++) {
+                if (userGuess == hangword[i]) {
+                    goodguess = true;
+                 //   wins++;
+                    placeholder[i] = userGuess;
+                     
+                    placeholderText.textContent = placeholder;
+                }
+            }
+            if (goodguess) {
+                wins++;
+            }
+            else {losses++};
+        
+        }
+        randomword();
+        console.log(hangword);
+        
+        buildplaceholder();
+        placeholderText.textContent = placeholder;
+        document.onkeyup = function (event) {
+
+            // Determines which key was pressed.
+            userGuess = event.key;
+            if (placeholder.indexOf(userGuess) < 0) {
+                checkforletter();
+            }
+            if (losses > 12){winlose="Maximum guesses exceeded - "};
+            if (placeholder.indexOf("_") < 0){winlose="YOU GOT IT! - "};
+            if ((losses > 12) || (placeholder.indexOf("_") < 0)){
+              
+                userChoiceText.textContent = " ";
+                directionsText.textContent =  "G A M E  O V E R  - " + winlose + " - Reload to Play Again";
+                return;
+            }
+            
+            
+
+
+
+
+             
+            userChoiceText.textContent = "You chose: " + userGuess;
+
+
+           
+            winsText.textContent = "Correct guesses: " + wins;
+            lossesText.textContent = "Incorrect guesses: " + losses;
+        
+
+        };
+         
+    </script>
